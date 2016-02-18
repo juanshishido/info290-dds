@@ -1,6 +1,9 @@
 \documentclass[11pt]{article}
 \bibliographystyle{siam}
-\usepackage[margin=0.75in]{geometry}
+\usepackage[margin=1in]{geometry}
+\usepackage{listings}
+\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true}
+\usepackage{hyperref}
 
 \title{Homework 1: Representation}
 \author{
@@ -46,12 +49,15 @@ taking the $log$.
 
 Another interesting set of features are those related to the results of other
 awards. FiveThirtyEight's Walt Hickey notes that, their model, relies on data
-from awards that historically predict the Oscars\cite{fivethirtyeight}. They
-use information on both nominations and winners. Some examples include the
+from awards that historically predict the Oscars\cite{fivethirtyeight-guide}.
+They use information on both nominations and winners. Some examples include the
 Golden Globes, the Critic's Choice Movie Awards, and the Producers Guild of
-America awards ceremony. For each award, there would be two binary features,
-one representing whether the film was nominated and another representing
-whether the film won.
+America awards ceremony. The idea is that there is some overlap in the
+individuals who vote for the Oscars and those that vote for the other awards.
+In fact, ``many members of the Screen Actors Guild will vote for both the SAG
+awards and for the Oscars''\cite{fivethirtyeight-election}. For each award,
+there would be two binary features, one representing whether the film was
+nominated and another representing whether the film won.
 
 Another potentially important set of features relate to the invididuals
 involved with the particular film. For example, a well-known or well-respected
@@ -71,24 +77,68 @@ a value between $0$ and $5$. It would be an average of several ratings. The
 challenge in this case would be to make sure that every film in the data set
 is represented by all of the rating institutions. Otherwise, the numbers may be
 skewed if some films are only rated by institutions who, on average, rate
-higher than others. Time would be an important consideration here, too. The way
-critics or individuals think about a "4-star" rating, for example, may change
-over time.
+higher (or lower) than others. Time would be an important consideration here,
+too. The way critics or individuals think about a ``4-star'' rating, for
+example, may change over time.
+
+It may also be useful to include information on the other Oscar categories
+that particular films are associated with. For example, films whose directors,
+actors, screenplays, scores, etc. are also nominated may have better chances of
+winning the Academy Award for Best Picture. This feature would simply be a
+count variable.
+
+Finally, while popularity or sentiment may not reflect the opinions or
+predispositions of the Oscar's voter-base, it could be a potentially important
+feature. There are two ways this could be done. First, the number of mentions
+that films receive in the popular media---news, music, etc.---could be a proxy
+for ``buzz.'' For a given film, this value would be normalized by the total
+number of film references (in a specified time period). This could be further
+enhanced by tracking the sentiment associated with those mentions.
 
 \subsection{People}
 
-For "people-based" awards, Bloomberg again identifies important features. They
-distinguish between male and female awards. The most historically predictive
-feature, for either sex, is race. According to their data source, only one
-non-white female and only seven non-white males have won Best Actress and Best
-Actor, respectively. This data might be represented as two binary
+For ``people-based'' awards, Bloomberg again identifies important features.
+They distinguish between male and female awards. The most historically
+predictive feature, for either sex, is race. According to their data source,
+only one non-white female and only seven non-white males have won Best Actress
+and Best Actor, respectively. This data might be represented as two binary
 features---white and non-white.
+
+It turns out prior nominations and prior wins are negatively associated with
+Oscar wins. Most winners have never been nominated. For both prior nominations
+and prior wins, the features would have three levels---none, one, or more than
+one. These features would then be binarized.
+
+Age also seems to be an important factor. In this case, there is a difference
+between females and males. Most women who have won Best Actress have been
+between 20 and 40. For Best Actor, this value is between 30 and 50. For this
+feature, it might make sense to bin into a few categories rather than having a
+continuous variable. Bloomberg's categories are: 20-29, 30-39, 40-49, and 50
+and over.
+
+Several of the features described in the previous subsection could also be used 
+for modeling the ``people-based'' categories. 
 
 \section{Subset to Instantiate}
 
-\subsection{Movies}
+In this section, I'll describe where an ``ideal'' subset of aforementioned
+features may come from.
 
-\subsection{People}
+A majority of the data can be found on Wikipedia. The
+\lstinline{data/wiki/movies} and the \lstinline{data/wiki/people}
+subdirectories include HTML files for the corresponding entries. For films,
+for example, there is information on the director, actors, budget, box office
+earnings, etc. For people, on the other hand, data on age, filmography, and
+awards is available.
+
+Ratings data can come from Rotten Tomatoes or IMDB.
+
+The nominations information could come from could come from
+\href{http://awardsdatabase.oscars.org/ampas_awards/BasicSearchInput.jsp}{The
+Official Academy Awards Database}.
+
+Data on mentions could be found by scraping news sites---perhaps focusing on
+aggregator sites---or Twitter.
 
 \bibliography{hw1_shishido_partI} 
 
