@@ -32,3 +32,42 @@ def logistic(weights, values):
     assert isinstance(weights, np.ndarray) and isinstance(values, np.ndarray)
     alpha = weights.dot(values)
     return np.exp(alpha) / (1 + np.exp(alpha))
+
+def build_cases(df):
+    df = df.copy()
+    cases = {}
+    for c in range(10):
+        yhat = logistic(df.weight.values, df[c].values)
+        cases[c] = {'yhat' : yhat, 'class' : yhat >= 0.5}
+    return cases
+
+def explanations(df, cases):
+    df = df.copy()
+    for c in range(10):
+        positive_class = cases[c]['class']
+        df.sort_values('weight', inplace=True, ascending=(not positive_class))
+        df.reset_index(drop=True, inplace=True)
+        E = []
+        arr = df[c].values
+        indices = np.where(arr==1)[0]
+        for ind in indices:
+            arr[ind] = 0
+            E.append(ind)
+            if positive_class and logistic(df.weight.values, arr) < 0.5:
+                break
+            elif not positive_class and logistic(df.weight.values, arr) >= 0.5:
+                break
+        terms = df.ix[E]['term'].tolist()
+        cases[c]['explanations'] = terms
+    return None
+
+
+if __name__ == '__main__':
+    coefficients = load_coefficients()
+    X, feature_names = features(load_reviews())
+    df = df_tdm_w(coefficients, X, feature_names)
+    cases = build_cases(df)
+    explanations(df, cases)
+    for c in range(10):
+        print('Case:', c, '| y_hat:', cases[c]['yhat'])
+        print('Removed Terms:', ' '.join(cases[c]['explanations']), end='\n\n')
