@@ -1,0 +1,67 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.85in]{geometry}
+\usepackage{listings}
+\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true}
+\usepackage{hyperref}
+\usepackage{parskip}
+
+\title{Homework 3: Interpretability}
+\author{
+  Shishido, Juan\\
+  \texttt{juanshishido}
+}
+
+\begin{document}
+\maketitle
+
+\section{Implementation}
+
+In this part of the assignment, I find the ``evidence counterfactual,'' first
+introduced by Martens and Provost (2014), which is a set of terms that
+\textit{explains} document classification. That is, the terms for each
+document that have the most influence in its prediction. This is defined as the 
+minimal set of terms that, if removed from a particular document's feature set, 
+changes the prediction.
+
+For each case---new movie review---I list the $\hat{y}$ and $P(y = 1 | x,\beta)$
+as well as the terms making up the evidence counterfactual.
+
+\begin{lstlisting}
+    Case 0: [1, 0.986130000582]
+    fun as well great best seen different also solid right both
+
+    Case 1: [0, 0.0456568348474]
+    worst poor script plot have
+
+    Case 2: [0, 0.0659175495022]
+    bad nothing boring only
+
+    Case 3: [0 | 0.000270418322628]
+    worst bad nothing boring poor script plot flat
+    terrible stupid tries poorly through on director worse
+
+    Case 4: [1, 0.994360979954]
+    flaws fun performances as well great yet job
+    entertaining back most enjoyed right
+
+    Case 5: [0, 0.0431419174185]
+    bad unfortunately poor script only
+
+    Case 6: [1, 0.67709206463]
+    very as
+
+    Case 7: [1, 0.979615393373]
+    very as well great yet job entertaining best back
+
+    Case 8: [1, 0.929799269066]
+    as yet best back both break will
+
+    Case 9: [1, 0.993976110347]
+    fun performances as town well yet perfectly back
+    light most laughs enjoyed enjoyable
+\end{lstlisting}
+
+The Python code used for this task can be found on GitHub
+\href{https://github.com/juanshishido/info290-dds/blob/master/assignments/assignment03/code/sedc.py}{[link]}.
+
+\end{document}

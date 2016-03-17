@@ -1,0 +1,56 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{csquotes}
+\usepackage{listings}
+\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true}
+
+\title{Homework 3: Interpretability}
+\author{
+  Shishido, Juan\\
+  \texttt{juanshishido}
+}
+
+\begin{document}
+\maketitle
+
+\section{Interpretable Models}
+
+In this part of the assignment, I discuss the degree to which the following
+models are considered ``interpretable'':
+
+\begin{itemize}  
+    \item decision trees
+    \item logistic regression
+    \item naive Bayes
+    \item topic models
+\end{itemize}
+
+In the first three cases, we consider binary classification tasks. These are
+characterized by grouping samples into one of two groups. In these cases,
+labeled training data are used to fit a particular model which can then predict
+class membership for unlabeled samples. These are examples of supervised
+learning methods.
+
+Decision trees are typically thought of as being the most interpretable. This
+is because they provide a set of rules that are explicit and can, in some
+cases, be easily visualized.
+
+Logistic regression models are the second most interpretable models. We can
+look at parameter estimates to get a sense of the magnitude or importance that
+each feature represents in its prediction. Logistic regression is also useful
+in that is returns a probability for the positive class. A difficulty with
+these models is interpreting the odds ratio.
+
+Topic models, on the other hand, are used for finding latent---or,
+unobserved---``topics'' or ``themes'' in a set of documents. These are
+considered unsupervised methods. There are several examples of topic models,
+such as latent Dirichlet allocation and non-negative matrix factorication.
+
+With topic models, documents can be thought of as having a 
+distribution over a set of topics and each topic can be thought of as having a
+distribution over a set of terms. Topic models---such as latent Dirichlet
+allocation---find the probability of topics given topic distributions. These
+provide a set of words associated with each topic, but human interpretation
+of what the topic means, based on those words, is still needed.
+
+\end{document}
