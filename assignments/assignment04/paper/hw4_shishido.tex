@@ -1,8 +1,6 @@
 \documentclass[11pt]{article}
 \usepackage[margin=1in]{geometry}
 \usepackage{csquotes}
-\usepackage{listings}
-\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true}
 
 \title{Homework 4: Multi-label Classification}
 \author{
@@ -13,12 +11,43 @@
 \begin{document}
 \maketitle
 
+\section{Introduction}
+
+In multi-\textit{label} classification, each instance is assigned a set of
+labels. This is relevant with suitable for text data, for example, where each
+document might be about several topics. In this assignment, we explore two
+possible approaches to multi-label classification, discussing how each method
+handles the correlations that exist between labels or features and how each
+method scales as the cardinality of $y$ increases.
+
 \section{Model I}
 
-First.
+In the first approach, each combination of labels---that is, each unique
+\textit{vector} of labels---is considered its own class. Each resulting
+``class'' is trained with its own classifier, using a one-vs.-rest approach.
+This representation allows any classifier capable of multi-\textit{class}
+classification to be used. Using logistic regression, for example, the
+predicted vector of labels for a given instance would correspond the one with
+the highest probability across the various classifiers. While this method
+accounts for correlations in the labels, there are several drawbacks. The
+\textit{minimum} number of classifiers that must be trained, for instance, is
+equal to the number of unique labels. In practice, though, this will be much
+higher. Second, with the large number of potential combinations, it is likely
+that the number of instances for a given ``class'' is small. This makes it more
+difficult for a classifier to discern class membership. This problem is related
+to the ``Curse of Dimensionality.''
 
 \section{Model II}
 
-Second.
+Given the issues with cardinality in Model I, the second approach seeks to
+reduce the dimensionality of $y$ by using principle component analysis (PCA).
+Up to now, we have not described the form of $y$. For a given instance, $y$ is
+a vector $\vec{y}$. However, across the data set, $y$ is an $n \times m$ matrix,
+where $n$ is the number of samples and $m$ is the number of unique labels. This
+label matrix would be projected into a lower-dimensional space, reducing the
+cardinality of $y$. A classifier is then trained on these ``reduced'' labels.
+Finally, these labels are transformed to the original label-space. This
+approach is able to handle the correlation in the labels and is able to scale
+with the cardinality of $y$.
 
 \end{document}
